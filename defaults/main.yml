@@ -1,0 +1,68 @@
+---
+
+# the GitHub repository to use when we clone DSpace
+dspace_git_repo: http://github.com/DSpace/DSpace.git
+dspace_git_branch: ucla-dr-5_x
+
+# The dspace_env_build_name is the "name" of this DSpace instance
+# It is used to name the environment-specific build properties file, which is used by Maven to customize the DSpace configuration 
+dspace_env_build_name: uclalib
+
+# Define location of DSpace Tomcat installation directory
+dspace_base: /usr/local/dspace
+
+# Define location of DSpace home directory
+dspace_home: /usr/local/dspace
+
+dspace_install_dir: /usr/local/dspace/dspace
+
+dspace_hostname: localhost
+dspace_baseUrl: http://localhost:8080
+dspace_ui: jspui
+dspace_name: DSpace at UCLA
+dspace_solr_server: http://localhost:8080/solr
+dspace_default_language: en_US
+
+dspace_handle_canonical_prefix: ${dspace.url}/handle/
+dspace_handle_prefix: 123456789
+
+
+# database settings
+dspace_db_driver: org.postgresql.Driver
+dspace_db_server_url: postgresql://localhost:5432/
+dspace_db_schema: 
+dspace_db_maxconnections: 30
+dspace_db_maxwait: 5000
+dspace_db_maxidle: -1
+dspace_db_statementpool: true
+dspace_db_poolname: dspacepool
+
+
+# Define DSpace tomcat container java options
+dspace_javaopts: "-server -Dfile.encoding=UTF-8 -Xmx1536M -Xms1200M -XX:MaxPermSize=192M -XX:PermSize=96M -Xss228k -XX:+UseParallelGC -XX:+UseParallelOldGC -XX:-UseGCOverheadLimit -XX:MaxGCPauseMillis=50 -XX:GCTimeRatio=9 -XX:+PerfDisableSharedMem -XX:+ParallelRefProcEnabled -XX:InitiatingHeapOccupancyPercent=75 -XX:+UseLargePages -XX:+AggressiveOpts -Dsolr.autoSoftCommit.maxTime=1000 -XX:+DisableExplicitGC -Dcom.sun.management.jmxremote -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/tmp/tomcat-7 -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses"
+
+# recommendations from Pascal Becker (with slight modification by Mark Wood)
+#dspace_javaopts: "-server -Xms512m -Xmx5120m  -Xss4m -d64 -Djava.awt.headless=true -Xcomp -Xbatch -XX:MaxPermSize=192m -XX:PermSize=96m -XX:+UseBoundThreads -XX:+UseParallelGC -XX:+UseParallelOldGC -XX:ParallelGCThreads=3 -XX:+UseThreadPriorities -XX:ThreadStackSize=1024 -XX:+UseLargePages -XX:+AggressiveOpts"
+
+# eventually, we'll want to turn on the YourKit profiler, add -agentpath:/usr/local/yourkit/bin/linux-x86-64/libyjpagent.so=delay=10000 to the above
+
+
+### the following defaults should ALWAYS be overridden by the playbook, don't use the default credentials, please
+
+dspace_admin_user: dspace
+dspace_admin_pass: dspace
+dspace_db_username: dspace
+dspace_db_password: dspace
+
+
+dspace_mail_server:
+dspace_mail_server_username:
+dspace_mail_server_port:
+dspace_mail_from_address:
+dspace_mail_feedback_recipient:
+dspace_mail_admin:
+dspace_mail_alert_recipient:
+dspace_mail_registration_notify:
+
+dspace_loglevel_other: INFO
+dspace_loglevel_dspace: INFO

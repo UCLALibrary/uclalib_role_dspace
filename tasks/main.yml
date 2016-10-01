@@ -1,0 +1,56 @@
+---
+
+- name: Create the DSpace Home directory
+  file: path={{ dspace_home }} owner=dspace group=dspace state=directory
+
+- name: Create the DSpace etc directory
+  file: path={{ dspace_home }}/etc owner=dspace group=dspace state=directory
+
+- name: Create the DSpace bin directory
+  file: path={{ dspace_home }}/bin owner=dspace group=dspace state=directory
+
+# TODO - add any bin scripts here
+# TODO - copy a bash profile file for the DSpace user here
+
+- name: Create the DSpace install directory
+  file: path={{ dspace_install_dir }} owner=dspace group=dspace state=directory
+
+- name: Put in place the DSpace tomcat users file
+  template: src=tomcat-users.xml.j2 dest={{ dspace_base }}/conf/tomcat-users.xml owner=dspace group=dspace
+
+- name: Put in place the DSpace tomcat environment variables file
+  template: src=dspace_env.j2 dest=/etc/sysconfig/dspace owner=root group=root
+
+- name: Clone the specified fork of DSpace
+  git: repo={{ dspace_git_repo }} dest={{ dspace_source_dir }} version={{ dspace_git_branch }}
+  become: yes
+  become_user: dspace
+
+- name: Ensure the DSpace source directory exists and has the correct ownership
+  file: path={{ dspace_source_dir }} owner=dspace group=dspace state=directory
+
+- name: drop the ENV build properties file in dspace-src
+  template: src=dspace_env_build.properties.j2  dest={{ dspace_source_dir }}/{{ dspace_env_build_name }}.properties owner=dspace group=dspace
+
+- name: download the PsiProbe war file for Tomcat testing
+  get_url: url=https://github.com/psi-probe/psi-probe/releases/download/2.4.0.SP1/probe.war dest={{ dspace_home }}/webapps/probe.war owner=dspace group=dspace checksum=md5:1589ee28657c6573d447071b0adfb412 owner=dspace group=dspace
+
+- name: ensure the Engine parent for the context fragment folder exists
+  file: path={{ dspace_home }}/conf/Catalina owner=dspace group=dspace state=directory
+
+- name: ensure a folder for context fragments exists
+  file: path={{ dspace_home }}/conf/Catalina/localhost owner=dspace group=dspace state=directory
+
+# TODO: figure out how to pass this list in from the playbook
+- name: drop context fragments for all webapps we use
+  template: src=dspace_cf_{{ item.name }}.j2 dest={{ dspace_base }}/conf/Catalina/localhost/{{ item.name }}.xml owner=dspace group=dspace
+  with_items: 
+   - { name: "probe" }
+   - { name: "jspui" }
+   - { name: "sword" }
+   - { name: "solr" }
+   - { name: "rest" }
+   - { name: "oai" }
+
+- name: drop a pgpass dotfile for the dspace user, to make working with postgresql easier
+  template: src=dspace_pgpass.j2 dest={{ dspace_home }}/.pgpass 
