@@ -29,7 +29,7 @@ dspace_handle_prefix: 123456789
 
 # database settings
 dspace_db_driver: org.postgresql.Driver
-dspace_db_server_url: postgresql://localhost:5432/
+dspace_db_server_url: jdbc:postgresql://localhost:5432/
 dspace_db_schema: 
 dspace_db_maxconnections: 30
 dspace_db_maxwait: 5000
@@ -63,6 +63,19 @@ dspace_mail_feedback_recipient:
 dspace_mail_admin:
 dspace_mail_alert_recipient:
 dspace_mail_registration_notify:
+public_keys_for_dspace_login:
 
 dspace_loglevel_other: INFO
 dspace_loglevel_dspace: INFO
+
+dspace_apps: 
+    - probe
+    - jspui
+    - sword
+    - solr
+    - rest
+    - oai
+
+dspace_users:
+    - dspace
+

@@ -1,0 +1,25 @@
+#! /bin/sh
+
+cd {{ dspace_install_dir }}
+
+if [ ! -x bin/dspace ]
+  then
+        echo "Start me in the [DSpace] directory, please!"
+        exit 1
+fi
+
+URL=`bin/dspace dsprop -property db.url`
+USER=`bin/dspace dsprop -property db.username`
+#PASSWORD=`bin/dspace dsprop -property db.password`
+# Don't leave the password lying around in 'ps'; type it yourself.
+
+if [ "`bin/dspace dsprop -property db.name`" = 'oracle' ]
+  then
+        DBURL=`echo "${URL}" | cut -d: -f3-`
+        sqlplus ${USER}@${DBURL}
+  else
+        DB=`echo "${URL}" | cut -d: -f3- | cut -d/ -f4`
+        HOST=`echo "${URL}" | cut -d: -f3- | cut -d/ -f3 | cut -d: -f1`
+        PORT=`echo "${URL}" | cut -d: -f3- | cut -d/ -f3 | cut -d: -f2`
+        psql --host ${HOST} --port ${PORT} --dbname ${DB} --user ${USER}
+fi
