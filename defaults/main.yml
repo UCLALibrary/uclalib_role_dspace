@@ -17,7 +17,7 @@ dspace_home: /usr/local/dspace
 dspace_install_dir: /usr/local/dspace/dspace
 
 dspace_hostname: localhost
-dspace_baseUrl: http://localhost:8080
+dspace_baseUrl: http://localhost:8081
 dspace_ui: jspui
 dspace_name: DSpace at UCLA
 dspace_solr_server: http://localhost:8080/solr
@@ -71,7 +71,7 @@ dspace_loglevel_dspace: INFO
 dspace_apps: 
     - probe
     - jspui
-    - sword
+    - swordv2
     - solr
     - rest
     - oai

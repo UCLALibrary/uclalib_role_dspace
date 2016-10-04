@@ -1,5 +1,18 @@
 ---
 
+# customize our bash prompt to show the current branch
+- name: Copy git prompt file
+  copy:
+    src: "git-prompt.sh"
+    dest: "/etc/bash_completion.d/git-prompt"
+    mode: 0755
+
+- name: Copy git prompt profile
+  copy:
+    src: "git-prompt-profile.sh"
+    dest: "/etc/profile.d/"
+    mode: 0755
+
 - name: Create the DSpace Home directory
   file: path={{ dspace_home }} owner=dspace group=dspace state=directory mode=2755
 
@@ -70,8 +83,8 @@
 - name: ensure the dspace service is enabled and started
   service: name=dspace enabled=yes state=started
 
-  # add our public keys to the dspace service user
-- authorized_key: 
+- name: add our public keys to the dspace service user
+  authorized_key: 
     user: dspace 
     key: "{{ public_keys_for_dspace_login }}" 
     state: present
