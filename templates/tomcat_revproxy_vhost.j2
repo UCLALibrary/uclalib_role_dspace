@@ -1,0 +1,56 @@
+<VirtualHost *:80>
+  ServerName {{ tomcat_server_name }}
+
+  ErrorLog /var/log/httpd/tomcatapps/error_log
+  CustomLog /var/log/httpd/tomcatapps/access_log combined
+
+  # don't loose time with IP address lookups
+  HostnameLookups Off
+
+  UseCanonicalName On
+
+  ProxyRequests Off
+  <Proxy *>
+    Order deny,allow
+    Allow from all
+  </Proxy>
+
+  ProxyPreserveHost On
+
+  ########################################
+  ### Proxies to Tomcat Apps ###
+
+  #TODO: use the dspace apps dictionary and a loop, instead of hard-coding these
+  <Location "/jspui">
+    ProxyPass         ajp://127.0.0.1:{{ dspace_ajp_conn_port }}/jspui retry=1 keepalive=on
+    ProxyPassReverse  ajp://127.0.0.1:{{ dspace_ajp_conn_port }}/jspui
+    SetEnv force-proxy-request-1.0 1
+    SetEnv proxy-nokeepalive 1
+   </Location>
+
+  <Location "/oai">
+    ProxyPass         ajp://127.0.0.1:{{ dspace_ajp_conn_port }}/oai retry=1 keepalive=on
+    ProxyPassReverse  ajp://127.0.0.1:{{ dspace_ajp_conn_port }}/oai
+    SetEnv force-proxy-request-1.0 1
+    SetEnv proxy-nokeepalive 1
+  </Location>
+
+  <Location "/swordv2">
+    ProxyPass         ajp://127.0.0.1:{{ dspace_ajp_conn_port }}/swordv2 retry=1 keepalive=on
+    ProxyPassReverse  ajp://127.0.0.1:{{ dspace_ajp_conn_port }}/swordv2
+    SetEnv force-proxy-request-1.0 1
+    SetEnv proxy-nokeepalive 1
+  </Location>
+
+  # TODO: figure out if this is the correct timeout
+  ProxyTimeout 300
+
+  # default allow all
+  <Location />
+    Order allow,deny
+    Allow from all
+  </Location>
+
+  ########################################
+
+</VirtualHost>

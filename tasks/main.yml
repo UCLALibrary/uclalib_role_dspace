@@ -13,6 +13,12 @@
     dest: "/etc/profile.d/"
     mode: 0755
 
+- name: enable the mod_env Apache module
+  lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="^#LoadModule env_module" state=present line="LoadModule env_module modules/mod_env.so" owner=root group=root mode=0644
+
+- name: enable the mod_proxy_ajp Apache module
+  lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="^#LoadModule proxy_ajp_module" state=present line="LoadModule proxy_ajp_module modules/mod_proxy_ajp.so" owner=root group=root mode=0644
+
 - name: Create the DSpace Home directory
   file: path={{ dspace_home }} owner=dspace group=dspace state=directory mode=2755
 
@@ -33,6 +39,14 @@
 
 - name: Put in place the DSpace tomcat environment variables file
   template: src=dspace_env.j2 dest=/etc/sysconfig/dspace owner=root group=root
+
+- name: Put in place the tomcat app server.xml file
+  template: src=tomcat_server_xml.j2 dest=/usr/local/dspace/conf/server.xml owner=dspace group=dspace
+
+- name: Put in place the Apache HTTPD reverse proxy vhost config for the dspace tomcat app
+  template: src=tomcat_revproxy_vhost.j2 dest=/etc/httpd/vhosts.d/tomcatapps.httpd.conf
+  notify:
+    - restart httpd
 
 - name: Put in place the .dspace.properties file for the DSpace user
   template: src=dspace_dotdspace_properties.j2 dest={{ dspace_home }}/.dspace.properties

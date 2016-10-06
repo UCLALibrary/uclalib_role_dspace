@@ -20,12 +20,16 @@ dspace_hostname: localhost
 dspace_baseUrl: http://localhost:8081
 dspace_ui: jspui
 dspace_name: DSpace at UCLA
-dspace_solr_server: http://localhost:8080/solr
+dspace_solr_server: http://localhost:8081/solr
 dspace_default_language: en_US
 
 dspace_handle_canonical_prefix: ${dspace.url}/handle/
 dspace_handle_prefix: 123456789
 
+# tomcat ports
+dspace_shut_port: 8006
+dspace_ajp_conn_port: 8010
+dspace_conn_port: 8081
 
 # database settings
 dspace_db_driver: org.postgresql.Driver
