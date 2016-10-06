@@ -18,29 +18,18 @@
   ProxyPreserveHost On
 
   ########################################
-  ### Proxies to Tomcat Apps ###
+  ### Proxies to DSpace Tomcat Apps ###
 
-  #TODO: use the dspace apps dictionary and a loop, instead of hard-coding these
-  <Location "/jspui">
-    ProxyPass         ajp://127.0.0.1:{{ dspace_ajp_conn_port }}/jspui retry=1 keepalive=on
-    ProxyPassReverse  ajp://127.0.0.1:{{ dspace_ajp_conn_port }}/jspui
-    SetEnv force-proxy-request-1.0 1
-    SetEnv proxy-nokeepalive 1
-   </Location>
-
-  <Location "/oai">
-    ProxyPass         ajp://127.0.0.1:{{ dspace_ajp_conn_port }}/oai retry=1 keepalive=on
-    ProxyPassReverse  ajp://127.0.0.1:{{ dspace_ajp_conn_port }}/oai
+{% for dspace_app in dspace_apps when dspace_app != "probe" %}
+  # {{ dspace_app }} dspace tomcat app
+  <Location "/{{dspace_app}}">
+    ProxyPass ajp://127.0.0.1:{{ dspace_ajp_conn_port }}/{{ dspace_app }} retry=1 keepalive=on
+    ProxyPassReverse ajp://127.0.0.1:{{ dspace_ajp_conn_port }}/{{ dspace_app }}
     SetEnv force-proxy-request-1.0 1
     SetEnv proxy-nokeepalive 1
   </Location>
 
-  <Location "/swordv2">
-    ProxyPass         ajp://127.0.0.1:{{ dspace_ajp_conn_port }}/swordv2 retry=1 keepalive=on
-    ProxyPassReverse  ajp://127.0.0.1:{{ dspace_ajp_conn_port }}/swordv2
-    SetEnv force-proxy-request-1.0 1
-    SetEnv proxy-nokeepalive 1
-  </Location>
+{% endfor %}
 
   # TODO: figure out if this is the correct timeout
   ProxyTimeout 300
@@ -52,5 +41,6 @@
   </Location>
 
   ########################################
+
 
 </VirtualHost>
