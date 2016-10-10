@@ -13,9 +13,6 @@
     dest: "/etc/profile.d/"
     mode: 0755
 
-- name: enable a 2 hour TMOUT for all shell accounts
-  lineinfile: dest=/etc/profile state=present insertafter=EOF line="export TMOUT=7200" owner=root group=root mode=0644
-
 - name: enable the mod_env Apache module
   lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="^#LoadModule env_module" state=present line="LoadModule env_module modules/mod_env.so" owner=root group=root mode=0644
 
