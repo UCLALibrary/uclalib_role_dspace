@@ -89,3 +89,7 @@ It is highly recommended to utilize an [ansible vault-protected vars file](https
 ```
 
 You can override the defaults by including them in the play (see above for examples).
+
+## Contributing
+
+Pull requests gladly accepted, thanks!
