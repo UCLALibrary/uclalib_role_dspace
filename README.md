@@ -20,7 +20,7 @@ dspace_install_dir and dspace_source_dir. For details look in vars/main.yml.
 
 The variable definitions should be placed in the playbook under the `vars` statement.
 
-It is highly recommended to utilize an [ansible vault-protected vars file]https://www.ansible.com/blog/2014/02/19/ansible-vault -- see the example below:
+It is highly recommended to utilize an [ansible vault-protected vars file](https://www.ansible.com/blog/2014/02/19/ansible-vault) -- see the example below:
 
 ```ansible
 ---
