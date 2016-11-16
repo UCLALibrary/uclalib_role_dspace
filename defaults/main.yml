@@ -2,7 +2,7 @@
 
 # the GitHub repository to use when we clone DSpace
 dspace_git_repo: http://github.com/DSpace/DSpace.git
-dspace_git_branch: ucla-dr-5_x
+dspace_git_branch: ucla-dr-6_x
 
 # The dspace_env_build_name is the "name" of this DSpace instance
 # It is used to name the environment-specific build properties file, which is used by Maven to customize the DSpace configuration 
