@@ -34,7 +34,7 @@ dspace_conn_port: 8081
 # database settings
 dspace_db_driver: org.postgresql.Driver
 dspace_db_server_url: jdbc:postgresql://localhost:5432/
-dspace_db_schema: 
+dspace_db_schema: public
 dspace_db_maxconnections: 30
 dspace_db_maxwait: 5000
 dspace_db_maxidle: -1
