@@ -2,7 +2,7 @@
 
 # the GitHub repository to use when we clone DSpace
 dspace_git_repo: http://github.com/DSpace/DSpace.git
-dspace_git_branch: ucla-dr-5_x
+dspace_git_branch: ucla-dr-6_x
 
 # The dspace_env_build_name is the "name" of this DSpace instance
 # It is used to name the environment-specific build properties file, which is used by Maven to customize the DSpace configuration 
@@ -34,7 +34,7 @@ dspace_conn_port: 8081
 # database settings
 dspace_db_driver: org.postgresql.Driver
 dspace_db_server_url: jdbc:postgresql://localhost:5432/
-dspace_db_schema: 
+dspace_db_schema: public
 dspace_db_maxconnections: 30
 dspace_db_maxwait: 5000
 dspace_db_maxidle: -1

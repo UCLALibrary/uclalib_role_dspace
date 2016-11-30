@@ -62,6 +62,9 @@
 - name: drop the ENV build properties file in dspace-src
   template: src=dspace_env_build.properties.j2  dest={{ dspace_source_dir }}/{{ dspace_env_build_name }}.properties owner=dspace group=dspace
 
+- name: drop the local.cfg file in dspace-src/dspace/config
+  template: src=local.cfg.j2 dest={{ dspace_source_dir }}/dspace/config/local.cfg owner=dspace group=dspace
+
 - name: download the PsiProbe war file for Tomcat testing
   get_url: url=https://github.com/psi-probe/psi-probe/releases/download/2.4.0.SP1/probe.war dest={{ dspace_home }}/webapps/probe.war owner=dspace group=dspace checksum=md5:1589ee28657c6573d447071b0adfb412 owner=dspace group=dspace
 
