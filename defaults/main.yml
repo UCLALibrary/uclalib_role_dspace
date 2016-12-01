@@ -23,8 +23,8 @@ dspace_name: DSpace at UCLA
 dspace_solr_server: http://localhost:8081/solr
 dspace_default_language: en_US
 
-dspace_handle_canonical_prefix: ${dspace.url}/handle/
-dspace_handle_prefix: 123456789
+dspace_handle_canonical_prefix: https://hdl.handle.net/
+dspace_handle_prefix: 20.500.11930
 
 # tomcat ports
 dspace_shut_port: 8006
