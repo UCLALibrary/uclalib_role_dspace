@@ -21,7 +21,6 @@
   ### Proxies to DSpace Tomcat Apps ###
 
 {% for dspace_app in dspace_apps %}
-  {% if dspace_app != "probe" %}
     # {{ dspace_app }} dspace tomcat app
     <Location "/{{dspace_app}}">
       ProxyPass ajp://127.0.0.1:{{ dspace_ajp_conn_port }}/{{ dspace_app }} retry=1 keepalive=on
@@ -29,7 +28,6 @@
       SetEnv force-proxy-request-1.0 1
       SetEnv proxy-nokeepalive 1
     </Location>
-  {% endif %}
 {% endfor %}
 
   # TODO: figure out if this is the correct timeout

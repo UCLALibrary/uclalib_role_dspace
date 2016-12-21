@@ -40,19 +40,22 @@
 - name: Put in place the DSpace tomcat environment variables file
   template: src=dspace_env.j2 dest=/etc/sysconfig/dspace owner=root group=root
 
+#TODO: conditionally use the tomcat7 or tomcat8 template here
 - name: Put in place the tomcat app server.xml file
-  template: src=tomcat_server_xml.j2 dest=/usr/local/dspace/conf/server.xml owner=dspace group=dspace
+  template: src=tomcat{{ tomcat_major_version }}_server_xml.j2 dest=/usr/local/dspace/conf/server.xml owner=dspace group=dspace
 
 - name: Put in place the Apache HTTPD reverse proxy vhost config for the dspace tomcat app
   template: src=tomcat_revproxy_vhost.j2 dest=/etc/httpd/vhosts.d/tomcatapps.httpd.conf
   notify:
     - restart httpd
 
+### BEGIN DSpace code tasks
+
 - name: Put in place the .dspace.properties file for the DSpace user
   template: src=dspace_dotdspace_properties.j2 dest={{ dspace_home }}/.dspace.properties
 
 - name: Clone the specified fork of DSpace
-  git: repo={{ dspace_git_repo }} dest={{ dspace_source_dir }} version={{ dspace_git_branch }}
+  git: repo={{ dspace_git_repo }} dest={{ dspace_source_dir }} version={{ dspace_git_branch }} accept_hostkey=true
   become: yes
   become_user: dspace
 
@@ -65,8 +68,22 @@
 - name: drop the local.cfg file in dspace-src/dspace/config
   template: src=local.cfg.j2 dest={{ dspace_source_dir }}/dspace/config/local.cfg owner=dspace group=dspace
 
+### END DSpace code tasks
+
+### BEGIN Handle code tasks
+
+- name: Clone the Remote Handle Resolver (rhr)
+  git: repo={{ rhr_git_repo }} dest={{ rhr_source_dir }} version={{ rhr_git_branch }} accept_hostkey=true
+  become: yes
+  become_user: dspace
+
+- name: Ensure the DSpace source directory exists and has the correct ownership
+  file: path={{ rhr_source_dir }} owner=dspace group=dspace state=directory mode=2775
+
+### END Handle code tasks
+
 - name: download the PsiProbe war file for Tomcat testing
-  get_url: url=https://github.com/psi-probe/psi-probe/releases/download/2.4.0.SP1/probe.war dest={{ dspace_home }}/webapps/probe.war owner=dspace group=dspace checksum=md5:1589ee28657c6573d447071b0adfb412 owner=dspace group=dspace
+  get_url: url=https://github.com/psi-probe/psi-probe/releases/download/{{ psiprobe_version }}/probe.war dest={{ dspace_home }}/webapps/probe.war owner=dspace group=dspace checksum=md5:44b153172445b32de8294262f9f85a36 owner=dspace group=dspace
 
 - name: dowload the GeoLiteCity file to speed up future deployment of DSpace
   get_url: url=http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz dest={{ dspace_home }}/lib/GeoLiteCity.dat.gz

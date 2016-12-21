@@ -7,4 +7,5 @@ dspace_install_dir: "{{dspace_home}}/dspace"
 
 # dspace_source_dir is where we check out dspace source code
 dspace_source_dir: "{{dspace_home}}/dspace-src"
+rhr_source_dir: "{{dspace_home}}/rhr-src"
 
