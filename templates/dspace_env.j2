@@ -10,7 +10,7 @@ export JAVA_HOME=/usr/lib/jvm/java
 export JAVA_OPTS="{{ dspace_javaopts }}"
 
 # Path to the common Tomcat binaries and libraries shared by all Tomcat instances
-export CATALINA_HOME=/usr/local/tomcat7
+export CATALINA_HOME=/usr/local/tomcat{{ tomcat_major_version }}
 
 # Path to this Tomcat instance
 export CATALINA_BASE={{ dspace_base }}

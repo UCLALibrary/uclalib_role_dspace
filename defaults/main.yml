@@ -2,7 +2,15 @@
 
 # the GitHub repository to use when we clone DSpace
 dspace_git_repo: http://github.com/DSpace/DSpace.git
-dspace_git_branch: ucla-dr-6_x
+dspace_git_branch: master
+
+# the GitHub repository to use for the Remote Handle Resolver (rhr)
+rhr_git_repo: http://github.com/DSpace/Remote-Handle-Resolver.git
+rhr_git_branch: master
+
+
+# PsiProbe version
+psiprobe_version: 3.0.0.RC1
 
 # The dspace_env_build_name is the "name" of this DSpace instance
 # It is used to name the environment-specific build properties file, which is used by Maven to customize the DSpace configuration 
@@ -23,8 +31,8 @@ dspace_name: DSpace at UCLA
 dspace_solr_server: http://localhost:8081/solr
 dspace_default_language: en_US
 
-dspace_handle_canonical_prefix: ${dspace.url}/handle/
-dspace_handle_prefix: 123456789
+dspace_handle_canonical_prefix: https://hdl.handle.net/
+dspace_handle_prefix: 20.500.11930
 
 # tomcat ports
 dspace_shut_port: 8006
