@@ -28,6 +28,7 @@ dspace_hostname: localhost
 dspace_baseUrl: http://localhost:8081
 dspace_ui: jspui
 dspace_name: DSpace at UCLA
+dspace_assetstore_dir: ${dspace.dir}/assetstore
 dspace_solr_server: http://localhost:8081/solr
 dspace_default_language: en_US
 
