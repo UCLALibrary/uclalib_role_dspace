@@ -76,6 +76,7 @@ dspace_mail_feedback_recipient:
 dspace_mail_admin:
 dspace_mail_alert_recipient:
 dspace_mail_registration_notify:
+dspace_service_user: dspace
 public_keys_for_dspace_login:
 
 dspace_loglevel_other: INFO
@@ -91,4 +92,3 @@ dspace_apps:
 
 dspace_users:
     - dspace
-
