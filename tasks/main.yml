@@ -119,6 +119,6 @@
 
 - name: add our public keys to the dspace service user
   authorized_key: 
-    user: dspace 
+    user: "{{ dspace_service_user }}"
     key: "{{ public_keys_for_dspace_login }}" 
     state: present
