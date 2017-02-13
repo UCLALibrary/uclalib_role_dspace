@@ -54,19 +54,29 @@
 - name: Put in place the .dspace.properties file for the DSpace user
   template: src=dspace_dotdspace_properties.j2 dest={{ dspace[dspaceinstance].dspace_home }}/.dspace.properties
 
+- debug:
+    msg: "Source dir is {{ dspace_source_dir }}"
+
+- debug:
+    msg: "
+          service user is: {{ dspace[dspaceinstance].dspace_service_user }}
+          repo is {{ dspace[dspaceinstance].dspace_git_repo }}
+          branch is {{ dspace[dspaceinstance].dspace_git_branch }}
+         "
+
 - name: Clone the specified fork of DSpace
-  git: repo={{ dspace[dspaceinstance].dspace_git_repo }} dest={{ dspace[dspaceinstance].dspace_source_dir }} version={{ dspace[dspaceinstance].dspace_git_branch }} accept_hostkey=true
+  git: repo={{ dspace[dspaceinstance].dspace_git_repo }} dest={{ dspace_source_dir }} version={{ dspace[dspaceinstance].dspace_git_branch }} accept_hostkey=true
   become: yes
   become_user: "{{ dspace[dspaceinstance].dspace_service_user }}"
 
 - name: Ensure the DSpace source directory exists and has the correct ownership
-  file: path={{ dspace[dspaceinstance].dspace_source_dir }} owner={{ dspace[dspaceinstance].dspace_service_user }} group={{ dspace[dspaceinstance].dspace_service_user }} state=directory mode=2775
+  file: path={{ dspace_source_dir }} owner={{ dspace[dspaceinstance].dspace_service_user }} group={{ dspace[dspaceinstance].dspace_service_user }} state=directory mode=2775
 
 - name: drop the ENV build properties file in dspace-src
-  template: src=dspace_env_build.properties.j2  dest={{ dspace[dspaceinstance].dspace_source_dir }}/{{ dspace[dspaceinstance].dspace_env_build_name }}.properties owner={{ dspace[dspaceinstance].dspace_service_user }} group={{ dspace[dspaceinstance].dspace_service_user }}
+  template: src=dspace_env_build.properties.j2  dest={{ dspace_source_dir }}/{{ dspace[dspaceinstance].dspace_env_build_name }}.properties owner={{ dspace[dspaceinstance].dspace_service_user }} group={{ dspace[dspaceinstance].dspace_service_user }}
 
 - name: drop the local.cfg file in dspace-src/dspace/config
-  template: src=local.cfg.j2 dest={{ dspace[dspaceinstance].dspace_source_dir }}/dspace/config/local.cfg owner={{ dspace[dspaceinstance].dspace_service_user }} group={{ dspace[dspaceinstance].dspace_service_user }}
+  template: src=local.cfg.j2 dest={{ dspace_source_dir }}/dspace/config/local.cfg owner={{ dspace[dspaceinstance].dspace_service_user }} group={{ dspace[dspaceinstance].dspace_service_user }}
 
 ### END DSpace code tasks
 
@@ -103,16 +113,16 @@
   with_items: "{{ dspace_users }}"
 
 - name: drop a pgpass dotfile for the dspace user, to make working with postgresql easier
-  template: src=dspace_pgpass.j2 dest={{ dspace_home }}/.pgpass owner={{ dspace[dspaceinstance].dspace_service_user }} group={{ dspace[dspaceinstance].dspace_service_user }} mode=600
+  template: src=dspace_pgpass.j2 dest={{ dspace[dspaceinstance].dspace_home }}/.pgpass owner={{ dspace[dspaceinstance].dspace_service_user }} group={{ dspace[dspaceinstance].dspace_service_user }} mode=600
 
 - name: allow the DSpace user to restart services
   lineinfile: dest=/etc/sudoers state=present insertafter=EOF line='{{ dspace[dspaceinstance].dspace_service_user }} ALL=(ALL) NOPASSWD:/sbin/service' validate='visudo -cf %s'
 
 - name: drop an .inputrc file for the dpace user
-  template: src=dspace_inputrc.j2 dest={{ dspace_home }}/.inputrc owner={{ dspace[dspaceinstance].dspace_service_user }} group={{ dspace[dspaceinstance].dspace_service_user }} mode=644
+  template: src=dspace_inputrc.j2 dest={{ dspace[dspaceinstance].dspace_home }}/.inputrc owner={{ dspace[dspaceinstance].dspace_service_user }} group={{ dspace[dspaceinstance].dspace_service_user }} mode=644
 
 - name: drop a .bashrc file for the dspace user
-  template: src=dspace_bashrc.j2 dest={{ dspace_home }}/.bashrc owner={{ dspace[dspaceinstance].dspace_service_user }} group={{ dspace[dspaceinstance].dspace_service_user }} mode=644
+  template: src=dspace_bashrc.j2 dest={{ dspace[dspaceinstance].dspace_home }}/.bashrc owner={{ dspace[dspaceinstance].dspace_service_user }} group={{ dspace[dspaceinstance].dspace_service_user }} mode=644
 
 - name: ensure the dspace service is enabled and started
   service: name={{ dspace[dspaceinstance].dspace_service_user }} enabled=yes state=started
