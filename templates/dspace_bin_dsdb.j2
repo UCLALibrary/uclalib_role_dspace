@@ -1,6 +1,6 @@
 #! /bin/sh
 
-cd {{ dspace_install_dir }}
+cd {{ dspace[dspaceinstance].dspace_install_dir }}
 
 if [ ! -x bin/dspace ]
   then

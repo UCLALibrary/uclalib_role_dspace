@@ -13,7 +13,7 @@ export JAVA_OPTS="{{ dspace_javaopts }}"
 export CATALINA_HOME=/usr/local/tomcat{{ tomcat_major_version }}
 
 # Path to this Tomcat instance
-export CATALINA_BASE={{ dspace_base }}
+export CATALINA_BASE={{ dspace[dspaceinstance].dspace_base }}
 
 # Set the location of the Catalina PID file
 export CATALINA_PID=$CATALINA_BASE/work/catalina.pid

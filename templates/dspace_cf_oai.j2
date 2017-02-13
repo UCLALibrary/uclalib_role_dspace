@@ -1,11 +1,11 @@
 <Context
-    docBase='{{ dspace_install_dir }}/webapps/oai'>
+    docBase='{{ dspace[dspaceinstance].dspace_install_dir }}/webapps/oai'>
 
   <Parameter
     description='Path to the DSpace configuration file.'
     override='false'
     name='dspace-config'
-    value='{{ dspace_install_dir }}/config/dspace.cfg'
+    value='{{ dspace[dspaceinstance].dspace_install_dir }}/config/dspace.cfg'
    />
 
 </Context>
