@@ -3,8 +3,8 @@
 # assembled vars based on defaults
 
 # dspace_install_dir: is where all compiled dspace code is deployed
-dspace_install_dir: "{{ dspace[dspaceinstance].dspace_home }}/{{ dspace[dspaceinstance].dspace_service_user }}"
+dspace_install_dir: "{{ dspace_home }}/{{ dspace_service_user }}"
 
 # dspace_source_dir is where we check out dspace source code
-dspace_source_dir: "{{ dspace[dspaceinstance].dspace_home }}/dspace-src"
-rhr_source_dir: "{{ dspace[dspaceinstance].dspace_home}}/rhr-src"
+dspace_source_dir: "{{ dspace_home }}/dspace-src"
+rhr_source_dir: "{{ dspace_home}}/rhr-src"
