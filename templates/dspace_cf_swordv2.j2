@@ -1,11 +1,11 @@
 <Context
-    docBase='{{ dspace[dspaceinstance].dspace_install_dir }}/webapps/swordv2'>
+    docBase='{{ dspace_install_dir }}/webapps/swordv2'>
 
   <Parameter
     description='Path to the DSpace configuration file.'
     override='false'
     name='dspace-config'
-    value='{{ dspace[dspaceinstance].dspace_install_dir }}/config/dspace.cfg'
+    value='{{ dspace_install_dir }}/config/dspace.cfg'
    />
 
 </Context>

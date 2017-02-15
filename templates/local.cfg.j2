@@ -28,16 +28,16 @@
 # DSpace installation directory.
 # This is the location where you want to install DSpace.
 # Windows note: Please remember to use forward slashes for all paths (e.g. C:/dspace)
-dspace.dir = {{ dspace[dspaceinstance].dspace_install_dir }}
+dspace.dir = {{ dspace_install_dir }}
 
 # DSpace host name - should match base URL.  Do not include port number
-dspace.hostname = {{ dspace[dspaceinstance].dspace_hostname }}
+dspace.hostname = {{ dspace_hostname }}
 
 # DSpace base host URL.  Include port number etc.
-dspace.baseUrl = {{ dspace[dspaceinstance].dspace_baseUrl }}
+dspace.baseUrl = {{ dspace_baseUrl }}
 
 # The user interface you will be using for DSpace. Common usage is either xmlui or jspui
-dspace.ui = {{ dspace[dspaceinstance].dspace_ui }}
+dspace.ui = {{ dspace_ui }}
 
 # Full link your end users will use to access DSpace. In most cases, this will be the baseurl followed by
 # the context path to the UI you are using.
@@ -47,10 +47,10 @@ dspace.ui = {{ dspace[dspaceinstance].dspace_ui }}
 #dspace.url = ${dspace.baseUrl}/${dspace.ui}
 
 # Name of the site
-dspace.name = {{ dspace[dspaceinstance].dspace_name }}
+dspace.name = {{ dspace_name }}
 # assetstore.dir, look at DSPACE/config/spring/api/bitstore.xml for more options
 # default is ${dspace.dir}/assetstore, uncomment and modify if you need to use a different path
-assetstore.dir = {{ dspace[dspaceinstance].dspace_assetstore_dir }}
+assetstore.dir = {{ dspace_assetstore_dir }}
 
 # Default language for metadata values
 #default.language = en_US
@@ -60,7 +60,7 @@ assetstore.dir = {{ dspace[dspaceinstance].dspace_assetstore_dir }}
 # The included 'solr' webapp MUST be deployed to Tomcat for DSpace to function.
 # Usually it will be available via port 8080 and the 'solr' context path. But,
 # But, you may need to modify this if you are running DSpace on a custom port, etc.
-solr.server = {{ dspace[dspaceinstance].dspace_solr_server }}
+solr.server = {{ dspace_solr_server }}
 
 ##########################
 # DATABASE CONFIGURATION #
@@ -70,7 +70,7 @@ solr.server = {{ dspace[dspaceinstance].dspace_solr_server }}
 # URL for connecting to database
 #    * Postgres template: jdbc:postgresql://localhost:5432/dspace
 #    * Oracle template: jdbc:oracle:thin:@//localhost:1521/xe
-db.url = {{ dspace[dspaceinstance].dspace_db_server_url }}{{ dspace[dspaceinstance].dspace_db_name }}
+db.url = {{ dspace_db_server_url }}{{ dspace_db_name }}
 
 # JDBC Driver
 #    * For Postgres: org.postgresql.Driver
@@ -83,8 +83,8 @@ db.driver = org.postgresql.Driver
 db.dialect = org.dspace.storage.rdbms.hibernate.postgres.DSpacePostgreSQL82Dialect
 
 # Database username and password
-db.username={{ postgres_build[env][dspaceinstance].dspace_db_username }}
-db.password={{ postgres_build[env][dspaceinstance].dspace_db_password }}
+db.username={{ dspace_db_username }}
+db.password={{ dspace_db_password }}
 
 # Database Schema name
 #    * For Postgres, this is often "public" (default schema)
@@ -112,35 +112,35 @@ db.maxidle = {{ dspace_db_maxidle }}
 
 # SMTP mail server (allows DSpace to send email notifications)
 #mail.server = smtp.example.com
-mail.server = {{ dspace[dspaceinstance].dspace_mail_server }}
+mail.server = {{ dspace_mail_server }}
 
 # SMTP mail server authentication username and password (if required)
 #db.maxidle = -1
-mail.server.username= {{ dspace[dspaceinstance].dspace_mail_server_username }}
-mail.server.password= {{ dspace[dspaceinstance].dspace_mail_server_password }}
+mail.server.username= {{ dspace_mail_server_username }}
+mail.server.password= {{ dspace_mail_server_password }}
 
 
 # SMTP mail server alternate port (defaults to 25)
-mail.server.port = {{ dspace[dspaceinstance].dspace_mail_server_port }}
+mail.server.port = {{ dspace_mail_server_port }}
 
 # From address for mail
 # All mail from the DSpace site will use this 'from' address
-mail.from.address = {{ dspace[dspaceinstance].dspace_mail_from_address }}
+mail.from.address = {{ dspace_mail_from_address }}
 
 # When feedback is submitted via the Feedback form, it is sent to this address
 # Currently limited to one recipient!
 #feedback.recipient = dspace-help@myu.edu
-feedback.recipient = {{ dspace[dspaceinstance].dspace_mail_feedback_recipient }}
+feedback.recipient = {{ dspace_mail_feedback_recipient }}
 
 # General site administration (Webmaster) e-mail
-mail.admin = {{ dspace[dspaceinstance].dspace_mail_admin }}
+mail.admin = {{ dspace_mail_admin }}
 
 # Recipient for server errors and alerts (defaults to mail.admin)
-alert.recipient= {{ dspace[dspaceinstance].dspace_mail_alert_recipient }}
+alert.recipient= {{ dspace_mail_alert_recipient }}
 
 # Recipient for new user registration emails (defaults to unspecified)
 #registration.notify =
-registration.notify= {{ dspace[dspaceinstance].dspace_mail_registration_notify }}
+registration.notify= {{ dspace_mail_registration_notify }}
 
 
 ########################
