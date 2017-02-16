@@ -67,9 +67,11 @@
          APR (HTTP/AJP) Connector: /docs/apr.html
          Define a non-SSL/TLS HTTP/1.1 Connector on port 8080
     -->
-    <Connector port="{{ dspace_conn_port }}" protocol="HTTP/1.1" address="127.0.0.1"
+    <Connector port="{{ dspace_conn_port }}" 
+               protocol="HTTP/1.1" 
+               address="0.0.0.0"
                connectionTimeout="20000"
-               redirectPort="8443" URIEncoding="UTF-8"/>
+               URIEncoding="UTF-8"/>
     <!-- A "Connector" using the shared thread pool-->
     <!--
     <Connector executor="tomcatThreadPool"
@@ -118,10 +120,11 @@
 
     <!-- use this site to calculate the timeouts below: http://www.meridianoutpost.com/resources/etools/calculators/calculator-file-download-time.php -->
     <!-- Define an AJP 1.3 Connector on port 8009 (or wherever), just on localhost -->
-    <Connector port="{{ dspace_ajp_conn_port }}"
+<!--    <Connector port="{{ dspace_ajp_conn_port }}"
         enableLookups="false" redirectPort="{{ dspace_conn_port }}" protocol="AJP/1.3" address="127.0.0.1" tomcatAuthentication="false"
         maxSwallowSize="-1"
         connectionTimeout="1232000" disableUploadTimeout="false" connectionUploadTimeout="1232000" URIEncoding="UTF-8"/>
+-->
 
 
 
