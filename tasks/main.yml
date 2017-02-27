@@ -40,6 +40,9 @@
 - name: Put in place the DSpace tomcat environment variables file
   template: src=dspace_env.j2 dest=/etc/sysconfig/dspace owner=root group=root
 
+- name: Put in place the Dspace environment variables file
+  template: src=sysconfig.j2 dest=/etc/sysconfig/{{ dspace_service_user }} owner=root group=root
+
 #TODO: conditionally use the tomcat7 or tomcat8 template here
 - name: Put in place the tomcat server.xml file
   template: src=tomcat{{ tomcat_major_version }}_server_xml.j2 dest={{ dspace_home }}/conf/server.xml owner={{ dspace_service_user }} group={{ dspace_service_user }}
