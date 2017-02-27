@@ -10,4 +10,4 @@ fi
 # Initialize Maven Settings to build DSpace using the '{{ dspace_env_build_name }}.properties' file(instead of default 'build.properties' file)
 # This ensures that you can simply run 'mvn package' from the command-line and Maven will default to using '{{ dspace_env_build_name }}.properties'.
 # Also set the -Xmx max heap setting for Maven, so it will run on smaller-sized VMs
-export MAVEN_OPTS="-Denv={{dspace_env_build_name}} -Xmx512m" #-Denv not needed for DSpace 6, but -Xmx512m probably is
+export MAVEN_OPTS="-Denv={{ dspace_env_build_name}} -Xmx512m" #-Denv not needed for DSpace 6, but -Xmx512m probably is

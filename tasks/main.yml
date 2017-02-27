@@ -16,38 +16,38 @@
 - name: enable the mod_env Apache module
   lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="^#LoadModule env_module" state=present line="LoadModule env_module modules/mod_env.so" owner=root group=root mode=0644
 
-- name: enable the mod_proxy_ajp Apache module
-  lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="^#LoadModule proxy_ajp_module" state=present line="LoadModule proxy_ajp_module modules/mod_proxy_ajp.so" owner=root group=root mode=0644
+#- name: enable the mod_proxy_ajp Apache module
+#  lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="^#LoadModule proxy_ajp_module" state=present line="LoadModule proxy_ajp_module modules/mod_proxy_ajp.so" owner=root group=root mode=0644
 
 - name: Create the DSpace Home directory
-  file: path={{ dspace_home }} owner=dspace group=dspace state=directory mode=2755
+  file: path={{ dspace_home }} owner={{ dspace_service_user }} group={{ dspace_service_user }} state=directory mode=2755
 
 - name: Create the DSpace etc directory
-  file: path={{ dspace_home }}/etc owner=dspace group=dspace state=directory mode=2775
+  file: path={{ dspace_home }}/etc owner={{ dspace_service_user }} group={{ dspace_service_user }} state=directory mode=2775
 
 - name: Create the DSpace bin directory
-  file: path={{ dspace_home }}/bin owner=dspace group=dspace state=directory mode=2775
+  file: path={{ dspace_home }}/bin owner={{ dspace_service_user }} group={{ dspace_service_user }} state=directory mode=2775
 
 - name: Create the DSpace lib directory
-  file: path={{ dspace_home }}/lib owner=dspace group=dspace state=directory mode=2775
+  file: path={{ dspace_home }}/lib owner={{ dspace_service_user }} group={{ dspace_service_user }} state=directory mode=2775
 
 - name: Create the DSpace install directory
-  file: path={{ dspace_install_dir }} owner=dspace group=dspace state=directory mode=2775
+  file: path={{ dspace_install_dir }} owner={{ dspace_service_user }} group={{ dspace_service_user }} state=directory mode=2775
 
 - name: Put in place the DSpace tomcat users file
-  template: src=tomcat-users.xml.j2 dest={{ dspace_base }}/conf/tomcat-users.xml owner=dspace group=dspace mode=660
+  template: src=tomcat-users.xml.j2 dest={{ dspace_base }}/conf/tomcat-users.xml owner={{ dspace_service_user }} group={{ dspace_service_user }} mode=660
 
 - name: Put in place the DSpace tomcat environment variables file
   template: src=dspace_env.j2 dest=/etc/sysconfig/dspace owner=root group=root
 
 #TODO: conditionally use the tomcat7 or tomcat8 template here
-- name: Put in place the tomcat app server.xml file
-  template: src=tomcat{{ tomcat_major_version }}_server_xml.j2 dest=/usr/local/dspace/conf/server.xml owner=dspace group=dspace
+- name: Put in place the tomcat server.xml file
+  template: src=tomcat{{ tomcat_major_version }}_server_xml.j2 dest={{ dspace_home }}/conf/server.xml owner={{ dspace_service_user }} group={{ dspace_service_user }}
 
-- name: Put in place the Apache HTTPD reverse proxy vhost config for the dspace tomcat app
-  template: src=tomcat_revproxy_vhost.j2 dest=/etc/httpd/vhosts.d/tomcatapps.httpd.conf
-  notify:
-    - restart httpd
+#- name: Put in place the Apache HTTPD reverse proxy vhost config for the dspace tomcat app
+ # template: src=tomcat_revproxy_vhost.j2 dest=/etc/httpd/vhosts.d/tomcatapps.httpd.conf
+#  notify:
+#    - restart httpd
 
 ### BEGIN DSpace code tasks
 
@@ -57,16 +57,16 @@
 - name: Clone the specified fork of DSpace
   git: repo={{ dspace_git_repo }} dest={{ dspace_source_dir }} version={{ dspace_git_branch }} accept_hostkey=true
   become: yes
-  become_user: dspace
+  become_user: "{{ dspace_service_user }}"
 
 - name: Ensure the DSpace source directory exists and has the correct ownership
-  file: path={{ dspace_source_dir }} owner=dspace group=dspace state=directory mode=2775
+  file: path={{ dspace_source_dir }} owner={{ dspace_service_user }} group={{ dspace_service_user }} state=directory mode=2775
 
 - name: drop the ENV build properties file in dspace-src
-  template: src=dspace_env_build.properties.j2  dest={{ dspace_source_dir }}/{{ dspace_env_build_name }}.properties owner=dspace group=dspace
+  template: src=dspace_env_build.properties.j2  dest={{ dspace_source_dir }}/{{ dspace_env_build_name }}.properties owner={{ dspace_service_user }} group={{ dspace_service_user }}
 
 - name: drop the local.cfg file in dspace-src/dspace/config
-  template: src=local.cfg.j2 dest={{ dspace_source_dir }}/dspace/config/local.cfg owner=dspace group=dspace
+  template: src=local.cfg.j2 dest={{ dspace_source_dir }}/dspace/config/local.cfg owner={{ dspace_service_user }} group={{ dspace_service_user }}
 
 ### END DSpace code tasks
 
@@ -75,50 +75,50 @@
 - name: Clone the Remote Handle Resolver (rhr)
   git: repo={{ rhr_git_repo }} dest={{ rhr_source_dir }} version={{ rhr_git_branch }} accept_hostkey=true
   become: yes
-  become_user: dspace
+  become_user: "{{ dspace_service_user }}"
 
 - name: Ensure the DSpace source directory exists and has the correct ownership
-  file: path={{ rhr_source_dir }} owner=dspace group=dspace state=directory mode=2775
+  file: path={{ rhr_source_dir }} owner={{ dspace_service_user }} group={{ dspace_service_user }} state=directory mode=2775
 
 ### END Handle code tasks
 
 - name: download the PsiProbe war file for Tomcat testing
-  get_url: url=https://github.com/psi-probe/psi-probe/releases/download/{{ psiprobe_version }}/probe.war dest={{ dspace_home }}/webapps/probe.war owner=dspace group=dspace checksum=md5:44b153172445b32de8294262f9f85a36 owner=dspace group=dspace
+  get_url: url=https://github.com/psi-probe/psi-probe/releases/download/{{ psiprobe_version }}/probe.war dest={{ dspace_home }}/webapps/probe.war owner={{ dspace_service_user }} group={{ dspace_service_user }} checksum=md5:44b153172445b32de8294262f9f85a36 owner={{ dspace_service_user }} group={{ dspace_service_user }}
 
 - name: dowload the GeoLiteCity file to speed up future deployment of DSpace
   get_url: url=http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz dest={{ dspace_home }}/lib/GeoLiteCity.dat.gz
 
 - name: ensure the Engine parent for the context fragment folder exists
-  file: path={{ dspace_home }}/conf/Catalina owner=dspace group=dspace state=directory mode=2775
+  file: path={{ dspace_home }}/conf/Catalina owner={{ dspace_service_user }} group={{ dspace_service_user }} state=directory mode=2775
 
 - name: ensure a folder for context fragments exists
-  file: path={{ dspace_home }}/conf/Catalina/localhost owner=dspace group=dspace state=directory mode=2775
+  file: path={{ dspace_home }}/conf/Catalina/localhost owner={{ dspace_service_user }} group={{ dspace_service_user }} state=directory mode=2775
 
 - name: drop context fragments for all webapps we use
-  template: src=dspace_cf_{{ item }}.j2 dest={{ dspace_base }}/conf/Catalina/localhost/{{ item }}.xml owner=dspace group=dspace mode=660
+  template: src=dspace_cf_{{ item }}.j2 dest={{ dspace_base }}/conf/Catalina/localhost/{{ item }}.xml owner={{ dspace_service_user }} group={{ dspace_service_user }} mode=660
   with_items: "{{ dspace_apps }}"
 
 - name: add users to the dspace group
-  user: name={{ item }} groups=dspace append=yes
+  user: name={{ item }} groups={{ dspace_service_user }} append=yes
   with_items: "{{ dspace_users }}"
 
 - name: drop a pgpass dotfile for the dspace user, to make working with postgresql easier
-  template: src=dspace_pgpass.j2 dest={{ dspace_home }}/.pgpass owner=dspace group=dspace mode=600
+  template: src=dspace_pgpass.j2 dest={{ dspace_home }}/.pgpass owner={{ dspace_service_user }} group={{ dspace_service_user }} mode=600
 
 - name: allow the DSpace user to restart services
-  lineinfile: dest=/etc/sudoers state=present insertafter=EOF line='dspace ALL=(ALL) NOPASSWD:/sbin/service' validate='visudo -cf %s'
+  lineinfile: dest=/etc/sudoers state=present insertafter=EOF line='{{ dspace_service_user }} ALL=(ALL) NOPASSWD:/sbin/service' validate='visudo -cf %s'
 
 - name: drop an .inputrc file for the dpace user
-  template: src=dspace_inputrc.j2 dest={{ dspace_home }}/.inputrc owner=dspace group=dspace mode=644
+  template: src=dspace_inputrc.j2 dest={{ dspace_home }}/.inputrc owner={{ dspace_service_user }} group={{ dspace_service_user }} mode=644
 
 - name: drop a .bashrc file for the dspace user
-  template: src=dspace_bashrc.j2 dest={{ dspace_home }}/.bashrc owner=dspace group=dspace mode=644
+  template: src=dspace_bashrc.j2 dest={{ dspace_home }}/.bashrc owner={{ dspace_service_user }} group={{ dspace_service_user }} mode=644
 
 - name: ensure the dspace service is enabled and started
-  service: name=dspace enabled=yes state=started
+  service: name={{ dspace_service_user }} enabled=yes state=started
 
 - name: add our public keys to the dspace service user
   authorized_key: 
-    user: dspace 
+    user: "{{ dspace_service_user }}"
     key: "{{ public_keys_for_dspace_login }}" 
     state: present
