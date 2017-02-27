@@ -49,6 +49,8 @@ dspace_db_maxwait: 5000
 dspace_db_maxidle: -1
 dspace_db_statementpool: true
 dspace_db_poolname: dspacepool
+dspace_xms: 1024m
+dspace_xmx: 1024m
 
 
 # Define DSpace tomcat container java options
