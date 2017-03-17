@@ -1,4 +1,4 @@
-# UCLALib Ansible Role: DSpace
+# UCLALib Ansible Role: DSpace [![Build Status](https://travis-ci.org/UCLALibrary/uclalib_role_dspace.svg?branch=master)](https://travis-ci.org/UCLALibrary/uclalib_role_dspace)
 
 Creates a bare-bones installation/configuration of a DSpace repository server
 
