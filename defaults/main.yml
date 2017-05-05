@@ -94,3 +94,7 @@ dspace_apps:
 
 dspace_users:
     - dspace
+
+cron_pkg: crontabs
+cron_spool_dir: /var/spool/cron
+cron_mailing_list: ""
