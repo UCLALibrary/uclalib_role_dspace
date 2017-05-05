@@ -32,7 +32,7 @@ It is highly recommended to utilize an [ansible vault-protected vars file](https
     - vars/dspace_vars_open.yml
 
   # Dependencies:
-  # ANXS/PostgreSQL role (https://github.com/ANXS/postgresql)
+  # ANXS/PostgreSQL role (https://github.com/ANXS/postgresql)testing...
 
   vars:
     java_package: java-1.7.0-openjdk-devel.x86_64
