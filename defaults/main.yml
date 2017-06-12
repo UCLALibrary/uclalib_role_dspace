@@ -98,3 +98,6 @@ dspace_users:
 cron_pkg: crontabs
 cron_spool_dir: /var/spool/cron
 cron_mailing_list: ""
+
+extra_configs: |
+# This variable is for including instance-specific configurations in the instance's local.cfg file
