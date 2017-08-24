@@ -19,6 +19,9 @@
 #- name: enable the mod_proxy_ajp Apache module
 #  lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="^#LoadModule proxy_ajp_module" state=present line="LoadModule proxy_ajp_module modules/mod_proxy_ajp.so" owner=root group=root mode=0644
 
+- name: set the Tomcat session timeout to a usefully huge number
+  lineinfile: dest={{ dspace_home }}/conf/web.xml regexp="<session-timeout>30</session-timeout>" state=present line="<session-timeout>840</session-timeout>" owner={{ dspace_service_user }} group={{ dspace_service_user }} mode=0644
+
 - name: Create the DSpace Home directory
   file: path={{ dspace_home }} owner={{ dspace_service_user }} group={{ dspace_service_user }} state=directory mode=2755
 
